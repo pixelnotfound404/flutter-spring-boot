@@ -8,114 +8,100 @@ class LoginView extends GetView<LoginController> {
   
   @override
   Widget build(BuildContext context) {
-    return GetX(
-      init: controller,
-      builder: (controller) {
-        return Scaffold(
-          body: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: controller.padding.value),
-                  child: Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Sign In',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 24),
+
+              TextField(
+                controller: controller.emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email),
                 ),
-                SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: controller.emailController,
-                    keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(height: 8),
+
+              Obx(() => TextField(
+                    controller: controller.passwordController,
+                    obscureText: controller.isPasswordHidden.value,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'Password',
                       border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.email),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Obx(
-                    () => TextField(
-                      controller: controller.passwordController,
-                      obscureText: controller.isPasswordHidden.value, // Added this line
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            controller.isPasswordHidden.value
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            controller.isPasswordHidden.value =
-                                !controller.isPasswordHidden.value;
-                          },
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.isPasswordHidden.value
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                         ),
+                        onPressed: () {
+                          controller.isPasswordHidden.value =
+                              !controller.isPasswordHidden.value;
+                        },
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Obx(
-                    () => ElevatedButton(
-                      onPressed: controller.isLoading.value ? null : controller.login,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 48),
-                        foregroundColor: Colors.white,
-                        backgroundColor: controller.isLoading.value 
-                            ? Colors.grey 
-                            : Colors.black54,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+                  )),
+              SizedBox(height: 24),
+
+              Obx(() => ElevatedButton(
+                    onPressed: controller.isLoading.value ? null : controller.login,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 48),
+                      foregroundColor: Colors.white,
+                      backgroundColor: controller.isLoading.value
+                          ? Colors.grey
+                          : Colors.black54,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      child: controller.isLoading.value
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
+                    ),
+                    child: controller.isLoading.value
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
                                 ),
-                                SizedBox(width: 8),
-                                Text("Signing in..."),
-                              ],
-                            )
-                          : Text("Sign In"),
-                    ),
+                              ),
+                              SizedBox(width: 8),
+                              Text("Signing in..."),
+                            ],
+                          )
+                        : Text("Sign In"),
+                  )),
+              SizedBox(height: 16),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Don\'t have an account?'),
+                  TextButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.register);
+                    },
+                    child: Text('Sign Up'),
                   ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Don\'t have an account?'),
-                    TextButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.register);
-                      },
-                      child: Text('Sign Up'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
