@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class loginResponse {
   final String token;
   final String expiresIn;
@@ -8,13 +7,77 @@ class loginResponse {
   loginResponse({required this.token, required this.expiresIn});
 
   factory loginResponse.fromJson(Map<String, dynamic> json) {
-    return loginResponse(token: json['token'], expiresIn: json['expiresIn']);
+    return loginResponse(
+      token: json['token']?.toString() ?? '',
+      expiresIn: json['expiresIn']?.toString() ?? '0',
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {'token': token, 'expiresIn': expiresIn};
   }
 }
+
+class RegisterResponse {
+  final String token;
+  final int expiresIn;
+  final String otp;
+  final int userId;
+  final String username;
+  final String fullName;
+  final String email;
+  final String passwordHash;
+  final bool verified;
+  final DateTime createdAt;
+  final String message;
+
+  RegisterResponse({
+    required this.token,
+    required this.expiresIn,
+    required this.otp,
+    required this.userId,
+    required this.username,
+    required this.fullName,
+    required this.email,
+    required this.passwordHash,
+    required this.verified,
+    required this.createdAt,
+    required this.message,
+  });
+
+  factory RegisterResponse.fromJson(Map<String, dynamic> json) {
+    return RegisterResponse(
+      token: json['token'],
+      expiresIn: json['expiresIn'],
+      otp: json['otp'],
+      userId: json['userId'],
+      username: json['username'],
+      fullName: json['fullName'],
+      email: json['email'],
+      passwordHash: json['passwordHash'],
+      verified: json['verified'],
+      createdAt: DateTime.parse(json['createdAt']),
+      message: json['message'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'token': token,
+      'expiresIn': expiresIn,
+      'otp': otp,
+      'userId': userId,
+      'username': username,
+      'fullName': fullName,
+      'email': email,
+      'passwordHash': passwordHash,
+      'verified': verified,
+      'createdAt': createdAt.toIso8601String(),
+      'message': message,
+    };
+  }
+}
+
 
 class User {
   final int id;

@@ -5,7 +5,7 @@ import 'package:flutter_springboot/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
 
@@ -28,10 +28,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: isLogin ? '/home' : '/login',
+      initialRoute: '/login',
       getPages: Routes.appPages,
     );
   }
 }
-
-  

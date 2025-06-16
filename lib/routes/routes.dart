@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_springboot/screen/OTP/otp_binnding.dart';
+import 'package:flutter_springboot/screen/OTP/otp_view.dart';
 import 'package:flutter_springboot/screen/home/home_binding.dart';
 import 'package:flutter_springboot/screen/home/home_view.dart';
 import 'package:flutter_springboot/screen/login/login_binding.dart';
@@ -27,9 +29,10 @@ class Routes {
       page: () => HomeView(), 
       binding: HomeBinding()
     ),
-    GetPage(name: Routes.register, 
-    page: ()=> SignupView(), 
-    binding: SignnupBinding()
-    )
+    GetPage(
+      name: Routes.register,
+      page: () => SignupView(),
+      binding: SignnupBinding(),
+    ),
   ];
 }

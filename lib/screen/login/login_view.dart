@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return GetX(
@@ -19,10 +20,7 @@ class LoginView extends GetView<LoginController> {
                   padding: EdgeInsets.only(top: controller.padding.value),
                   child: Text(
                     'Sign In',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(height: 24),
@@ -30,61 +28,89 @@ class LoginView extends GetView<LoginController> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
                     controller: controller.emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.email),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: TextField(
-                    controller: controller.passwordController,
-                    decoration: InputDecoration(
-                      labelText:
-                          'Password', // Acts as a placeholder but remains visible when typing
-                      border:
-                          OutlineInputBorder(), // Optional: Adds a border for better visibility
+                  child: Obx(
+                    () => TextField(
+                      controller: controller.passwordController,
+                      obscureText: controller.isPasswordHidden.value, // Added this line
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            controller.isPasswordHidden.value
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            controller.isPasswordHidden.value =
+                                !controller.isPasswordHidden.value;
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 24,
-                ),
+                SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ElevatedButton(
-                    onPressed: controller.login,
-                    style: ElevatedButton.styleFrom(
+                  child: Obx(
+                    () => ElevatedButton(
+                      onPressed: controller.isLoading.value ? null : controller.login,
+                      style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 48),
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.black54,
+                        backgroundColor: controller.isLoading.value 
+                            ? Colors.grey 
+                            : Colors.black54,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
-                        )),
-                    child: Text(
-                      "sign in",
+                        ),
+                      ),
+                      child: controller.isLoading.value
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Text("Signing in..."),
+                              ],
+                            )
+                          : Text("Sign In"),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
+                SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Don\'t have an account?'),
                     TextButton(
                       onPressed: () {
-                         Get.toNamed(Routes.register);
+                        Get.toNamed(Routes.register);
                       },
                       child: Text('Sign Up'),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
